@@ -1,0 +1,44 @@
+#!/usr/bin/env groovy-shebang
+package ydsu.module.skeleton
+
+import groovy.transform.BaseScript
+import ydsu.module.util.lib.LoggingBaseScript
+
+@BaseScript LoggingBaseScript baseScript
+
+void usage() {
+    info "Usage:"
+    info " skeletonChainOfResponsibility <string arg0> <integer arg1>"
+    info " skeletonChainOfResponsibility string0 10"
+    System.exit(1)
+}
+
+void checkPreconditions() {
+    if (args.length < 2) {
+        usage()
+    }
+    if (args[0].contains("invalid")) {
+        error "argument arg0 must not contain the word 'invalid'"
+        System.exit(1)
+    }
+    // Omit declaring the type so to make the variable visible globally
+    arg0 = args[0]
+    step1(args[1].toInteger())
+}
+
+void step1(int arg1) {
+    if (arg1 < 0) {
+        error "argument arg1 must not be negative"
+        System.exit(1)
+    } else if (arg1 < 10) {
+        info "Steps completed"
+    } else {
+        step2(arg1)
+    }
+}
+
+void step2(int arg1) {
+    info "Steps completed, arg0=$arg0, arg1=$arg1"
+}
+
+checkPreconditions()

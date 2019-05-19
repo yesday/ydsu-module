@@ -1,0 +1,10 @@
+= Official modules for YDSU
+Doc Writer <yesdayuk@gmail.com>
+v1.0, 2019-05-19
+:toc: macro
+toc::[]
+:numbered:
+
+== About
+
+This is a Gradle project including official modules for YDSU. The `skeleton` module is installed as part of the default distribution when installing YDSU in your system.

@@ -1,0 +1,12 @@
+#!/usr/bin/env groovy-shebang
+package ydsu.module.skeleton
+
+import groovy.transform.BaseScript
+import ydsu.module.util.lib.LoggingBaseScript
+
+@BaseScript LoggingBaseScript baseScript
+
+debug 'Foo debug'
+info 'Foo info'
+warn 'Foo warn'
+error 'Foo error'
