@@ -1,2 +1,3 @@
 module:
+  - /source/ydsu-module/src/main/groovy/ydsu/module/skeleton
   - /source/src/test/groovy/ydsu/module/util/source/inttestscript

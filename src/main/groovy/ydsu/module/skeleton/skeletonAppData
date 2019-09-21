@@ -17,20 +17,20 @@ import ydsu.module.util.source.WriteAppData
 
 //region ReadAppData
 ReadAppData rad = new ReadAppData()
-File moduleYaml = rad.conf('module.yml')
-LinkedHashMap moduleContent = YamlUtil.parseYaml(moduleYaml)
-info "Content of conf/module.yml:\n${moduleContent.toString()}"
+File yaml = rad.conf('example-conf.yml')
+LinkedHashMap content = YamlUtil.parseYaml(yaml)
+info "Content and location of conf/example-conf.yml:\n${content.toString()}, ${yaml}"
 //endregion
 
 //region WriteAppData
 // WriteAppData will be stored inside user's home
 WriteAppData wad = new WriteAppData()
-File moduleYamlToWrite = wad.conf('module.yml')
-YamlUtil.dumpYaml('''
-module:
-  - https://github.com/yesday/ydsu-module/master/src/main/groovy/ydsu/module/skeleton
-  - https://github.com/yesday/ydsu-module/master/src/main/groovy/ydsu/module/skeleton2
-''', moduleYamlToWrite)
-moduleContent = YamlUtil.parseYaml(rad.conf('module.yml'))
-info "New content of module.yml:\n${moduleContent.toString()}"
+File yamlToWrite = wad.conf('example-conf.yml')
+LinkedHashMap modified = new LinkedHashMap(content)
+modified.put('key2', 'value2')
+YamlUtil.dumpYaml(modified, yamlToWrite)
+yaml = rad.conf('example-conf.yml')
+content = YamlUtil.parseYaml(yaml)
+info ''
+info "New content and location of example-conf.yml:\n${content.toString()}, ${yaml}"
 //endregion

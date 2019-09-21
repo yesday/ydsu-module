@@ -12,16 +12,19 @@ info 'List contents of current directory'
 info '---------------------------------------------------'
 info 'ls'.execute().text
 
+info ''
 info 'List contents of ~/appdata/ydsu'
 info '---------------------------------------------------'
 File ydsuHome = new File(System.getProperty('user.home'), 'appdata/ydsu')
 info command('ls', ydsuHome)
 info "${command('ls|wc -l', ydsuHome)} files in total"
 
+info ''
 info 'List contents of ~/appdata/ydsu using longCommand'
 info '---------------------------------------------------'
 info longCommand('ls', ydsuHome)
 
+info ''
 info 'List contents of ~/appdata/ydsu using shell command'
 info '---------------------------------------------------'
 int exitValue = shell('ls', ydsuHome)

@@ -6,7 +6,7 @@ import org.yaml.snakeyaml.Yaml
 
 import java.nio.charset.StandardCharsets
 
-@Grab(group = 'org.yaml', module = 'snakeyaml', version = '1.24', transitive = false)
+@Grab(group = 'org.yaml', module = 'snakeyaml', version = '1.25', transitive = false)
 @Slf4j
 class YamlUtil {
     static LinkedHashMap parseYaml(File yaml) {
