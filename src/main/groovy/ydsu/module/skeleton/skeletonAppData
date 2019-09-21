@@ -1,0 +1,36 @@
+#!/usr/bin/env groovy-shebang
+package ydsu.module.skeleton
+
+import groovy.transform.BaseScript
+import ydsu.module.skeleton.source.YamlUtil
+import ydsu.module.util.source.LoggingBaseScript
+import ydsu.module.util.source.ReadAppData
+import ydsu.module.util.source.WriteAppData
+
+@BaseScript LoggingBaseScript baseScript
+
+/**
+ * Skeleton script showcasing the use of ReadAppData and WriteAppData utility classes that are part of the ydsu util
+ * module.
+ * Also, just like the YamlUtil class used in this script, you can add your own classes under the source subpackage.
+ */
+
+//region ReadAppData
+ReadAppData rad = new ReadAppData()
+File moduleYaml = rad.conf('module.yml')
+LinkedHashMap moduleContent = YamlUtil.parseYaml(moduleYaml)
+info "Content of conf/module.yml:\n${moduleContent.toString()}"
+//endregion
+
+//region WriteAppData
+// WriteAppData will be stored inside user's home
+WriteAppData wad = new WriteAppData()
+File moduleYamlToWrite = wad.conf('module.yml')
+YamlUtil.dumpYaml('''
+module:
+  - https://github.com/yesday/ydsu-module/master/src/main/groovy/ydsu/module/skeleton
+  - https://github.com/yesday/ydsu-module/master/src/main/groovy/ydsu/module/skeleton2
+''', moduleYamlToWrite)
+moduleContent = YamlUtil.parseYaml(rad.conf('module.yml'))
+info "New content of module.yml:\n${moduleContent.toString()}"
+//endregion

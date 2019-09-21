@@ -2,10 +2,10 @@
 package ydsu.module.skeleton
 
 import groovy.transform.BaseScript
-import ydsu.module.skeleton.lib.PathUtil
-import ydsu.module.util.lib.LoggingBaseScript
+import ydsu.module.util.source.LoggingBaseScript
+import ydsu.module.util.source.SystemPathUtil
 
 @BaseScript LoggingBaseScript baseScript
 
-String parent = PathUtil.scriptFile.parent
-info "ls --ignore=conf --ignore=lib $parent".execute().text
+String parent = SystemPathUtil.scriptFile.parent
+info "ls --ignore=conf --ignore=source $parent".execute().text

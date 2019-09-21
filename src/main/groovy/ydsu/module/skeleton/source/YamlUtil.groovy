@@ -1,4 +1,4 @@
-package ydsu.module.skeleton.lib
+package ydsu.module.skeleton.source
 
 import groovy.util.logging.Slf4j
 import org.yaml.snakeyaml.DumperOptions

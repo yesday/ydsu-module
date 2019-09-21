@@ -2,7 +2,7 @@
 package ydsu.module.skeleton
 
 import groovy.transform.BaseScript
-import ydsu.module.util.lib.LoggingBaseScript
+import ydsu.module.util.source.LoggingBaseScript
 
 @BaseScript LoggingBaseScript baseScript
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy-shebang
-package ydsu.module.skeleton
+package ydsu.module.util.source.inttestscript
 
 import groovy.transform.BaseScript
 import ydsu.module.util.source.LoggingBaseScript

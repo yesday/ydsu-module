@@ -2,24 +2,29 @@
 package ydsu.module.skeleton
 
 import groovy.transform.BaseScript
-import ydsu.module.util.lib.Exec
-import ydsu.module.util.lib.LoggingBaseScript
+import ydsu.module.util.source.LoggingBaseScript
+
+import static ydsu.module.util.source.Exec.*
 
 @BaseScript LoggingBaseScript baseScript
 
 info 'List contents of current directory'
-info '------------------------------------------------'
-info "ls".execute().text
+info '---------------------------------------------------'
+info 'ls'.execute().text
 
 info 'List contents of ~/appdata/ydsu'
-info '------------------------------------------------'
+info '---------------------------------------------------'
 File ydsuHome = new File(System.getProperty('user.home'), 'appdata/ydsu')
-info Exec.command('ls', ydsuHome)
-info "${Exec.command('ls|wc -l', ydsuHome)} files in total"
+info command('ls', ydsuHome)
+info "${command('ls|wc -l', ydsuHome)} files in total"
 
-info 'List contents of ~/appdata/ydsu using Exec.shell'
-info '------------------------------------------------'
-int exitValue = Exec.shell('ls', ydsuHome)
+info 'List contents of ~/appdata/ydsu using longCommand'
+info '---------------------------------------------------'
+info longCommand('ls', ydsuHome)
+
+info 'List contents of ~/appdata/ydsu using shell command'
+info '---------------------------------------------------'
+int exitValue = shell('ls', ydsuHome)
 if (exitValue) {
     error "ls for $ydsuHome.name exited with non-zero value $exitValue"
     System.exit(exitValue)

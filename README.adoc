@@ -1,10 +1,149 @@
-= Official modules for YDSU
+= Official modules for ydsu
 Doc Writer <yesdayuk@gmail.com>
-v1.0, 2019-05-19
+v1.0, 2019-09-21
 :toc: macro
 toc::[]
 :numbered:
 
 == About
 
-This is a Gradle project including official modules for YDSU. The `skeleton` module is installed as part of the default distribution when installing YDSU in your system.
+This is a Gradle project including official modules for ydsu. The `skeleton` module is installed as part of the default distribution when installing ydsu in your system.
+
+== Compile and run the tests
+
+Build the docker image that will run the tests
+
+ docker rmi archlinux
+ docker build -t archlinux src/main/docker/archlinux
+
+To run the tests type
+
+[source, bash]
+----
+docker run --rm -it \
+  --group-add $(getent group docker|cut -d: -f3) \
+  -e HOST_WORKDIR=$(pwd) \
+  -e YDSU_REPO='/source' \
+  -v ~/.m2:/home/ydsu/.m2 \
+  -v $(pwd):/source \
+  -v gradle-cache:/home/ydsu/.gradle \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  archlinux /bin/bash -c './gradlew --no-daemon clean test -i'
+----
+
+To compile the project and publish the maven artifact to your local repository type
+
+ ./gradlew clean publishToMavenLocal
+
+Then you can add the project as a dependency to your own `build.gradle` configuration as follows
+
+.build.gradle
+[source, groovy]
+----
+dependencies {
+    implementation group: 'io.github.yesday', name: 'ydsu-module', version: '1.0.0-SNAPSHOT'
+}
+----
+
+== Concurrent mode
+
+In order to improve performance, the tests are configured to run in concurrent mode. This configuration can be overridden through the following environment variables:
+
+```bash
+junitParallel=true \
+junitParallelMode=same_thread \
+junitParallelModeClasses=concurrent \
+junitParallelStrategy=fixed \
+junitParallelThreads=6 \
+./gradlew clean test
+```
+
+Or more specifically
+
+```bash
+docker run --rm -it \
+  --group-add $(getent group docker|cut -d: -f3) \
+  -e HOST_WORKDIR=$(pwd) \
+  -e YDSU_REPO='/source' \
+  -e junitParallel=true \
+  -e junitParallelMode=same_thread \
+  -e junitParallelModeClasses=concurrent \
+  -e junitParallelStrategy=fixed \
+  -e junitParallelThreads=6 \
+  -v $(pwd):/source \
+  -v gradle-cache:/home/ydsu/.gradle \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  archlinux /bin/bash -c './gradlew --no-daemon clean test -i'
+```
+
+Note that adding the annotation `@Execution(ExecutionMode.CONCURRENT)` to test classes seems to override the configuration `junitParallelMode=same_thread` setting it to `junitParallelMode=concurrent`.
+
+== Test filtering
+
+Following are some examples on how to run subsets of tests.
+
+Run all tests in DockerClientIntTest
+
+```bash
+./gradlew clean test --tests DockerClientIntTest
+```
+
+Run a single specified test in DockerClientIntTest
+
+```bash
+./gradlew clean test --tests "DockerClientIntTest.can run docker image" -i
+```
+
+The above will run the specified test `can run docker image` inside `DockerClientIntTest`. The `-i` flag will print the test results to the standard output by setting the log level to info (`--info`).
+
+Run matching tests in DockerClientIntTest
+
+```bash
+./gradlew clean test --tests "DockerClientIntTest.*can run*" -i
+```
+
+The above will match and run the test `can run docker image` inside `DockerClientIntTest`.
+
+See also: https://docs.gradle.org/current/userguide/java_testing.html#test_filtering[Test filtering]
+
+== Upgrade Gradle dependencies
+
+To find out which dependencies have updated version available type
+
+```bash
+./gradlew dependencyUpdates
+```
+
+The above command will present a list of dependencies along with information about the updated version available, for example
+
+```bash
+ - org.assertj:assertj-core [3.13.1 -> 3.13.2]
+     http://assertj.org
+```
+
+Using the above information, update the file `build.gradle` to reflect the latest versions. In the above example, you would update the dependency `assertj-core` from version `1.13.1` to `1.13.2`. Once complete, re-run the `./gradlew dependencyUpdates` command to verify there are no more updates available.
+
+In order to manually check available versions for a dependency open https://mvnrepository.com and search for the dependency name.
+
+The `./gradlew dependencyUpdates` will also indicate when gradle itself has an updated version available
+
+```bash
+Gradle release-candidate updates:
+ - Gradle: [5.6.1 -> 5.6.2]
+```
+
+If that is the case, update `gradle/wrapper/gradle-wrapper.properties` with the latest version, and run the following to update the Wrapper JAR
+
+ ./gradlew wrapper
+
+Note that the following configuration will set the distribution type to `all` instead of the default `bin` distribution
+
+.build.gradle
+[source, groovy]
+----
+wrapper {
+    distributionType = 'all'
+}
+----
+
+See also: https://docs.gradle.org/current/userguide/gradle_wrapper.html
