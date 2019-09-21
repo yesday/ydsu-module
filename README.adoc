@@ -23,7 +23,6 @@ To run the tests type
 docker run --rm -it \
   --group-add $(getent group docker|cut -d: -f3) \
   -e HOST_WORKDIR=$(pwd) \
-  -e YDSU_REPO='/source' \
   -v ~/.m2:/home/ydsu/.m2 \
   -v $(pwd):/source \
   -v gradle-cache:/home/ydsu/.gradle \

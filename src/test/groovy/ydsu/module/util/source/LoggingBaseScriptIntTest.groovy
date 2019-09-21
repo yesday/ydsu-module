@@ -13,7 +13,6 @@ class LoggingBaseScriptIntTest {
     void beforeAll() {
         dockerClient = new DockerClient('archlinux', 'src/main/docker/archlinux')
                 .withBindMount(System.getenv('HOST_WORKDIR') ?: '$(pwd)', '/source')
-                .withEnv('YDSU_REPO', '/source')
         dockerClient.run()
         assertThat(dockerClient.execInContainer('java -version')).startsWith('openjdk version')
         assertThat(dockerClient.imageExists()).isTrue()
