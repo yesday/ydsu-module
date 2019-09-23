@@ -21,6 +21,7 @@ class LoggingBaseScriptIntTest {
         dockerClient.execScriptInContainer('cp /source/src/test/resources/ydsu/module/manage/conf/module-local.yml ~/appdata/ydsu/conf/yesday-ydsu-manage/module.yml')
         String out = dockerClient.execScriptInContainer('curl -s "https://raw.githubusercontent.com/yesday/ydsu/master/src/main/bash/install/ydsu-install.sh" | bash')
         assertThat(out).doesNotContain('error').doesNotContain('Exception')
+                .contains('Loaded single module skeleton')
                 .contains('Loaded single module inttestscript')
     }
 
