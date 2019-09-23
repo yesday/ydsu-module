@@ -3,9 +3,14 @@ package ydsu.module.skeleton
 
 import groovy.transform.BaseScript
 import ydsu.module.util.source.LoggingBaseScript
+import ydsu.module.util.source.OSFamily
 import ydsu.module.util.source.SystemPathUtil
 
 @BaseScript LoggingBaseScript baseScript
 
 String parent = SystemPathUtil.scriptFile.parent
-info "ls --ignore=conf --ignore=source $parent".execute().text
+if (OSFamily.instance == OSFamily.DARWIN) {
+    info "ls $parent".execute().text - 'conf' - 'source'
+} else {
+    info "ls --ignore=conf --ignore=source $parent".execute().text
+}
