@@ -1,4 +1,4 @@
-#!/usr/bin/env groovy-shebang
+#!/usr/bin/env ydsu-groovy-shebang
 package ydsu.module.skeleton
 
 import groovy.transform.BaseScript
